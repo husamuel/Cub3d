@@ -47,7 +47,7 @@ static void	draw_wall_column(t_game *game, t_ray *ray, t_wall *wall, int x)
 
 	if (!game || !game->img)
 		return ;
-	data = mlx_get_data_addr(game->img, &info[0], &info[1], &info[3]);
+	data = mlx_get_data_addr(game->img, &info[0], &info[1], &info[2]);
 	if (ray->side == 0)
 		color = create_trgb(255, 0, 0);
 	else
