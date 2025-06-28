@@ -68,6 +68,7 @@ int	init_window(t_game *game)
 		return (1);
 	if (init_image(game))
 		return (1);
+	load_textures(game);
 	render_scene(game);
 	setup_hooks(game);
 	mlx_loop(game->mlx);

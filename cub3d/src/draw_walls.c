@@ -37,28 +37,51 @@ static int	calc_wall_dist_and_height(t_game *game, t_ray *ray, t_wall *wall)
 	return (1);
 }
 
-static void	draw_wall_column(t_game *game, t_ray *ray, t_wall *wall, int x)
+static void draw_wall_column(t_game *game, t_ray *ray, t_wall *wall, int x)
 {
-	int		y;
-	char	*dst;
-	char	*data;
-	int		info[3];
-	int		color;
+    int y;
+    char *dst;
+    char *data;
+    int info[3];
+    t_tex *tex;
+    int tex_x;
+    int tex_y;
+    int color;
+    double step;
+    double tex_pos;
+    double wall_x;
 
-	if (!game || !game->img)
-		return ;
-	data = mlx_get_data_addr(game->img, &info[0], &info[1], &info[2]);
-	if (ray->side == 0)
-		color = create_trgb(255, 0, 0);
-	else
-		color = create_trgb(128, 0, 0);
-	y = wall->draw_start;
-	while (y <= wall->draw_end)
-	{
-		dst = data + (y * info[1] + x * (info[0] / 8));
-		*(unsigned int *)dst = color;
-		y++;
-	}
+    if (!game || !game->img)
+        return;
+    data = mlx_get_data_addr(game->img, &info[0], &info[1], &info[2]);
+    if (ray->side == 0 && ray->dir_x > 0)
+        tex = &game->west;
+    else if (ray->side == 0 && ray->dir_x < 0)
+        tex = &game->east;
+    else if (ray->side == 1 && ray->dir_y > 0)
+        tex = &game->north;
+    else
+        tex = &game->south;
+    if (ray->side == 0)
+        wall_x = game->player.y + wall->perp_dist * ray->dir_y;
+    else
+        wall_x = game->player.x + wall->perp_dist * ray->dir_x;
+    wall_x -= floor(wall_x);
+    tex_x = (int)(wall_x * (double)(tex->width));
+    if ((ray->side == 0 && ray->dir_x > 0) || (ray->side == 1 && ray->dir_y < 0))
+        tex_x = tex->width - tex_x - 1;
+    step = 1.0 * tex->height / wall->line_height;
+    tex_pos = (wall->draw_start - game->win_height / 2 + wall->line_height / 2) * step;
+    y = wall->draw_start;
+    while (y <= wall->draw_end)
+    {
+        tex_y = (int)tex_pos % tex->height;
+        tex_pos += step;
+        color = ((unsigned int *)tex->data)[tex_y * tex->width + tex_x];
+        dst = data + (y * info[1] + x * (info[0] / 8));
+        *(unsigned int *)dst = color;
+        y++;
+    }
 }
 
 static int	cast_ray(t_game *game, int x, t_ray *ray, t_wall *wall)

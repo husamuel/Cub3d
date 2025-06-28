@@ -45,6 +45,17 @@
 #  define BUFFER_SIZE 512
 # endif
 
+typedef struct s_tex
+{
+	void	*img;        // pointer returned by mlx_xpm_file_to_image
+	char	*data;       // pointer to pixel data (from mlx_get_data_addr)
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_tex;
+
 typedef struct s_map
 {
 	char	**grid;
@@ -91,6 +102,10 @@ typedef struct s_game
 	t_player	player;
 	t_map		*map;
 	t_keys		keys; // Estado das teclas
+	t_tex	north;
+	t_tex	south;
+	t_tex	west;
+	t_tex	east;
 }	t_game;
 
 typedef struct s_ray
@@ -145,6 +160,7 @@ void	draw_walls(t_game *game);
 int		init_ray(t_game *game, int x, t_ray *ray);
 int		calc_step_and_dist(t_ray *ray, t_game *game);
 int		perform_dda(t_game *game, t_ray *ray);
+void	load_textures(t_game *game);
 
 // Camera rotation functions (camera_rotation.c)
 void	init_player_vectors(t_game *game);
