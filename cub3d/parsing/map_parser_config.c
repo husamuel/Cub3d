@@ -50,13 +50,18 @@ static void	parse_color(int *dest, char *line)
 
 static void	store_texture_path(char **dest, char *src)
 {
+	int		i;
+
 	*dest = ft_strdup(src);
 	if (!*dest)
 	{
 		printf("Error: memory allocation failed for path\n");
 		exit(1);
 	}
-	(*dest)[strcspn(*dest, "\n ")] = 0;
+	i = 0;
+	while ((*dest)[i] && (*dest)[i] != '\n' && (*dest)[i] != ' ')
+		i++;
+	(*dest)[i] = '\0';
 }
 
 static void	parse_texture(t_map *map, char *line, int type)

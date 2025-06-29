@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ==============PROBLEMAS==============
- * Funcoes Proibidas: strcspn, fdopen, fclose, getline
+/* ==============MISSING==============
+ * criar main_utils.c e draw_walls_utils2.c - norminette
 */
 
 #ifndef CUB3D_H
@@ -132,7 +132,7 @@ typedef struct s_wall
 	int		draw_end;
 }	t_wall;
 
-// Just for norminette purposes in map_grid_parser.c
+// =============== Just for norminette ====================
 typedef struct s_grid_info
 {
 	char	**map_lines;
@@ -140,18 +140,41 @@ typedef struct s_grid_info
 	int		*max_width;
 }	t_grid_info;
 
+typedef struct s_draw_data
+{
+	char	*data;
+	int		*info;
+	t_tex	*tex;
+	int		tex_x;
+	int		x;
+	double	step;
+	double	tex_pos;
+}	t_draw_data;
+
+typedef struct s_tex_info
+{
+	t_game	*game;
+	t_ray	*ray;
+	t_wall	*wall;
+	t_tex	*tex;
+}	t_tex_info;
+// ========================================================
+
 // Parsing functions
 void	map_parser(t_game *game, char *filename);
 void	parse_config_line(t_map *map, char *line);
 void	validate_texture_paths(t_map *map);
 void	verify_map(t_map *map);
 void	check_player_in_line(t_map *map, char *line, int y);
-int		parse_config_section(t_map *map, FILE *file, char **line);
-void	parse_map_grid(FILE *file, t_map *map, char *first_line);
+int     parse_config_section(t_map *map, int fd, char **line);
+void	parse_map_grid(int fd, t_map *map, char *first_line);
 void	handle_map_line(t_map *map, char *line, t_grid_info *info);
 void	read_map_lines(FILE *file, t_map *map, t_grid_info *info);
 void	check_rgb_value(int value, char **rgb, int i);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
+int		is_player_char(char c);
+int		is_valid_map_char(char c);
+void	validate_map_line(char *line);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);

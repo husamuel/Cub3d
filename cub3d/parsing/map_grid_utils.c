@@ -42,33 +42,28 @@ void	check_player_in_line(t_map *map, char *line, int y)
 	}
 }
 
-void	handle_map_line(t_map *map, char *line, t_grid_info *info)
+int	is_valid_map_char(char c)
 {
-	if (line[0] == '\n')
-		return ;
-	process_map(info->map_lines, info->height, line, info->max_width);
-	check_player_in_line(map, info->map_lines[*info->height], *info->height);
-	(*info->height)++;
-	if (*info->height >= MAX_MAP_HEIGHT)
-	{
-		printf("Error: map too tall\n");
-		free_resources(info->map_lines, *info->height, line);
-		exit(1);
-	}
+	return (c == '0' || c == '1' || is_player_char(c));
 }
 
-void	read_map_lines(FILE *file, t_map *map, t_grid_info *info)
+void	validate_map_line(char *line)
 {
-	char	*line;
-	size_t	len;
-	ssize_t	read;
-
-	line = NULL;
-	len = 0;
-	while ((read = getline(&line, &len, file)) != -1)
+	int i = 0;
+	size_t len;
+	
+	len = ft_strlen(line);
+    if (len > 0 && line[len - 1] == '\n')
 	{
-		if (read > 1 && line[0] != '\n')
-			handle_map_line(map, line, info);
+        line[len - 1] = '\0';
 	}
-	free(line);
+	while (line[i])
+	{
+		if (!is_valid_map_char(line[i]) && line[i] != ' ')
+		{
+			printf("Error: invalid character '%c' in map\n", line[i]);
+			exit(1);
+		}
+		i++;
+	}
 }

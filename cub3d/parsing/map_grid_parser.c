@@ -53,9 +53,11 @@ void	allocate_grid_line(t_map *map, char **map_lines, int height, char *line)
 
 void	process_map(char **map_lines, int *height, char *line, int *max_width)
 {
-	int	width;
+	int		width;
+	char	*newline = ft_strchr(line, '\n');
 
-	line[strcspn(line, "\n")] = 0;
+	if (newline)
+		*newline = '\0';
 	map_lines[*height] = ft_strdup(line);
 	if (!map_lines[*height])
 	{
@@ -67,14 +69,16 @@ void	process_map(char **map_lines, int *height, char *line, int *max_width)
 	width = ft_strlen(map_lines[*height]);
 	if (width > *max_width)
 		*max_width = width;
+	(*height)++;
 }
 
 static int	process_first_line(t_map *map, char **map_lines, char *first_line)
 {
-	int	width;
-	int	max_width;
+	int		width;
+	char	*newline = ft_strchr(first_line, '\n');
 
-	first_line[strcspn(first_line, "\n")] = 0;
+	if (newline)
+		*newline = '\0';
 	map_lines[0] = ft_strdup(first_line);
 	if (!map_lines[0])
 	{
@@ -82,25 +86,32 @@ static int	process_first_line(t_map *map, char **map_lines, char *first_line)
 		exit(1);
 	}
 	width = ft_strlen(map_lines[0]);
-	max_width = width;
 	check_player_in_line(map, map_lines[0], 0);
-	return (max_width);
+	return (width);
 }
 
-void	parse_map_grid(FILE *file, t_map *map, char *first_line)
+void	parse_map_grid(int fd, t_map *map, char *first_line)
 {
 	char		*map_lines[MAX_MAP_HEIGHT];
 	int			height;
 	int			max_width;
-	t_grid_info	info;
+	char		*line;
 
 	height = 0;
 	max_width = process_first_line(map, map_lines, first_line);
 	height++;
-	info.map_lines = map_lines;
-	info.height = &height;
-	info.max_width = &max_width;
-	read_map_lines(file, map, &info);
+	while ((line = get_next_line(fd)))
+	{
+		if (line[0] == '\n' || line[0] == '\0')
+		{
+			free(line);
+			continue ;
+		}
+		validate_map_line(line);
+		process_map(map_lines, &height, line, &max_width);
+		check_player_in_line(map, map_lines[height - 1], height - 1);
+		free(line);
+	}
 	map->height = height;
 	map->width = max_width;
 	allocate_grid_line(map, map_lines, height, NULL);
