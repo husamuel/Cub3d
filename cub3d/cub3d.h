@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:22:16 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 19:09:41 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:34:14 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 
 typedef struct s_tex
 {
-	void	*img;        // pointer returned by mlx_xpm_file_to_image
-	char	*data;       // pointer to pixel data (from mlx_get_data_addr)
+	void	*img;
+	char	*data;
 	int		width;
 	int		height;
 	int		bpp;
@@ -102,10 +102,10 @@ typedef struct s_game
 	t_player	player;
 	t_map		*map;
 	t_keys		keys; // Estado das teclas
-	t_tex	north;
-	t_tex	south;
-	t_tex	west;
-	t_tex	east;
+	t_tex		north;
+	t_tex		south;
+	t_tex		west;
+	t_tex		east;
 }	t_game;
 
 typedef struct s_ray
@@ -158,6 +158,14 @@ typedef struct s_tex_info
 	t_wall	*wall;
 	t_tex	*tex;
 }	t_tex_info;
+
+typedef struct s_parse_state
+{
+	t_map	*map;
+	char	**map_lines;
+	int		*height;
+	int		*max_width;
+}	t_parse_state;
 // ========================================================
 
 // Parsing functions
@@ -166,15 +174,14 @@ void	parse_config_line(t_map *map, char *line);
 void	validate_texture_paths(t_map *map);
 void	verify_map(t_map *map);
 void	check_player_in_line(t_map *map, char *line, int y);
-int     parse_config_section(t_map *map, int fd, char **line);
+int		parse_config_section(t_map *map, int fd, char **line);
 void	parse_map_grid(int fd, t_map *map, char *first_line);
-void	handle_map_line(t_map *map, char *line, t_grid_info *info);
-void	read_map_lines(FILE *file, t_map *map, t_grid_info *info);
 void	check_rgb_value(int value, char **rgb, int i);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
 int		is_player_char(char c);
 int		is_valid_map_char(char c);
 void	validate_map_line(char *line);
+void	process_map_line(int fd, t_parse_state *state);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);
@@ -183,6 +190,12 @@ void	draw_walls(t_game *game);
 int		init_ray(t_game *game, int x, t_ray *ray);
 int		calc_step_and_dist(t_ray *ray, t_game *game);
 int		perform_dda(t_game *game, t_ray *ray);
+void	load_textures(t_game *game);
+void	draw_texture_loop(t_draw_data *d, int draw_start, int draw_end);
+int		get_tex_x(t_game *game, t_ray *ray, t_wall *wall, t_tex *tex);
+void	draw_texture_column(t_tex_info *info, int x);
+t_tex	*get_texture(t_game *game, t_ray *ray);
+void	load_texture(t_game *game, t_tex *tex, char *path);
 void	load_textures(t_game *game);
 
 // Camera rotation functions (camera_rotation.c)

@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 18:22:54 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 18:52:47 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:08:32 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ int	is_valid_map_char(char c)
 
 void	validate_map_line(char *line)
 {
-	int i = 0;
-	size_t len;
-	
+	int		i;
+	size_t	len;
+
+	i = 0;
 	len = ft_strlen(line);
-    if (len > 0 && line[len - 1] == '\n')
+	if (len > 0 && line[len - 1] == '\n')
 	{
-        line[len - 1] = '\0';
+		line[len - 1] = '\0';
 	}
 	while (line[i])
 	{

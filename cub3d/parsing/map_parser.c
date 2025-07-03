@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:51 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 18:52:36 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:11:57 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ void	check_config_complete(int config_count, char *line, int fd)
 	}
 }
 
+void	skip_empty_lines(int fd, char **line)
+{
+	*line = get_next_line(fd);
+	while (*line)
+	{
+		if ((*line)[0] != '\n' && (*line)[0] != '\0')
+			break ;
+		free(*line);
+		*line = get_next_line(fd);
+	}
+}
+
 int	parse_config_section(t_map *map, int fd, char **line)
 {
 	int		config_count;
@@ -41,31 +53,27 @@ int	parse_config_section(t_map *map, int fd, char **line)
 	{
 		*line = get_next_line(fd);
 		if (!*line)
-			break;
+			break ;
 		if ((*line)[0] == '\n' || (*line)[0] == '\0')
 		{
 			free(*line);
-			continue;
+			continue ;
 		}
 		parse_config_line(map, *line);
 		config_count++;
 		free(*line);
 	}
-	while ((*line = get_next_line(fd)))
-	{
-		if ((*line)[0] != '\n' && (*line)[0] != '\0')
-			break;
-		free(*line);
-	}
+	skip_empty_lines(fd, line);
 	return (config_count);
 }
 
 void	map_parser(t_game *game, char *filename)
 {
 	int		fd;
-	char	*line = NULL;
+	char	*line;
 	int		config_count;
 
+	line = NULL;
 	fd = open(filename, O_RDONLY);
 	check_file_open(fd, filename);
 	config_count = parse_config_section(game->map, fd, &line);
