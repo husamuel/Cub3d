@@ -10,10 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ==============MISSING==============
- * criar main_utils.c e draw_walls_utils2.c - norminette
-*/
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
