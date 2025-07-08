@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_walls_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: husamuel <husamuel@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 18:58:42 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 19:09:13 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:31:08 by husamuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	init_ray(t_game *game, int x, t_ray *ray)
 {
 	if (!game || !game->map || !game->map->grid)
 		return (0);
-	ray->camera_x = 2 * x / (double)game->win_width - 1;
+	ray->camera_x = 2 * x / (double)(game->win_width - 1) - 1;
 	ray->dir_x = game->player.dir_x + game->player.plane_x * ray->camera_x;
 	ray->dir_y = game->player.dir_y + game->player.plane_y * ray->camera_x;
 	ray->map_x = (int)game->player.x;
