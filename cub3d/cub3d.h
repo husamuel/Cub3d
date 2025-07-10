@@ -10,10 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ==============MISSING==============
- * criar main_utils.c e draw_walls_utils2.c - norminette
-*/
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -36,14 +32,6 @@
 # define MAX_MAP_HEIGHT 1024
 # define ROTATION_SPEED 0.03 // Velocidade de rotação em radianos
 # define MOVE_SPEED 0.03 // Velocidade de movimentação
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
-# endif
-# if BUFFER_SIZE > 125000 || BUFFER_SIZE < 1
-#  undef BUFFER_SIZE
-#  define BUFFER_SIZE 512
-# endif
 
 typedef struct s_tex
 {
