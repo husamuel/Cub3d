@@ -6,9 +6,14 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:22:16 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/03 18:34:14 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:51:58 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Leaks quando fecha
+ * Leaks com parsing errado
+*/
 
 #ifndef CUB3D_H
 # define CUB3D_H
