@@ -6,7 +6,7 @@
 #    By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 17:34:15 by diolivei          #+#    #+#              #
-#    Updated: 2025/07/11 16:30:12 by diolivei         ###   ########.fr        #
+#    Updated: 2025/07/11 17:27:12 by diolivei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,16 +38,20 @@ $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(MLX_A):
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR); \
+	fi
 	$(MAKE) -C $(MLX_DIR)
 
 clean:
 	rm -f $(OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -f $(MLX_DIR)/*.o $(MLX_DIR)/libmlx.a
+	$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	@if [ -d "$(MLX_DIR)" ]; then rm -rf $(MLX_DIR); fi
 
 re: fclean all
 
