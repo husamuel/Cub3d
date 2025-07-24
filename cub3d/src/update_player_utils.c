@@ -14,34 +14,34 @@
 
 static void	set_north_dir(t_game *game)
 {
-	game->player.dir_x = -1.0;
+	game->player.dir_x = 0.0;    // no horizontal movement
+	game->player.dir_y = -1.0;   // move up (row - 1)
+	game->player.plane_x = 0.66; // camera plane perpendicular to dir vector
+	game->player.plane_y = 0.0;
+}
+
+static void	set_south_dir(t_game *game)
+{
+	game->player.dir_x = 0.0;
+	game->player.dir_y = 1.0;
+	game->player.plane_x = -0.66;
+	game->player.plane_y = 0.0;
+}
+
+static void	set_east_dir(t_game *game)
+{
+	game->player.dir_x = 1.0;
 	game->player.dir_y = 0.0;
 	game->player.plane_x = 0.0;
 	game->player.plane_y = 0.66;
 }
 
-static void	set_south_dir(t_game *game)
+static void	set_west_dir(t_game *game)
 {
-	game->player.dir_x = 1.0;
+	game->player.dir_x = -1.0;
 	game->player.dir_y = 0.0;
 	game->player.plane_x = 0.0;
 	game->player.plane_y = -0.66;
-}
-
-static void	set_east_dir(t_game *game)
-{
-	game->player.dir_x = 0.0;
-	game->player.dir_y = 1.0;
-	game->player.plane_x = 0.66;
-	game->player.plane_y = 0.0;
-}
-
-static void	set_west_dir(t_game *game)
-{
-	game->player.dir_x = 0.0;
-	game->player.dir_y = -1.0;
-	game->player.plane_x = -0.66;
-	game->player.plane_y = 0.0;
 }
 
 void	set_player_direction(t_game *game)

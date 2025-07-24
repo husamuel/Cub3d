@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 /*
- * Leaks quando fecha
- * Leaks com parsing errado
-*/
+ * Error: missing RGB component - leak get_next_line
+ * Error: invalid character - leak get_next_line
+ * Error: multiple player start positions - leak get_next_line
+ * Error: missing texture path for - leak get_next_line
+ */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -163,18 +165,18 @@ typedef struct s_parse_state
 
 // Parsing functions
 void	map_parser(t_game *game, char *filename);
-void	parse_config_line(t_map *map, char *line);
-void	validate_texture_paths(t_map *map);
-void	verify_map(t_map *map);
-void	check_player_in_line(t_map *map, char *line, int y);
-int		parse_config_section(t_map *map, int fd, char **line);
-void	parse_map_grid(int fd, t_map *map, char *first_line);
+void	parse_config_line(t_map *map, char *line, t_game *game);
+void	validate_texture_paths(t_map *map, t_game *game);
+void	verify_map(t_game *game, t_map *map, char *line);
+void	check_player_in_line(t_game *game, t_map *map, char *line, int y, char **map_lines, int *height, char *first_line);
+int		parse_config_section(t_map *map, int fd, char **line, t_game *game);
+void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line);
 void	check_rgb_value(int value, char **rgb, int i);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
 int		is_player_char(char c);
 int		is_valid_map_char(char c);
-void	validate_map_line(char *line);
-void	process_map_line(int fd, t_parse_state *state);
+void	validate_map_line(char *line, t_game *game, char **map_lines, int *height, char *first_line);
+void	process_map_line(t_game *game, int fd, t_parse_state *state, char *first_line);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);
@@ -222,6 +224,7 @@ void	free_resources(char **map_lines, int height, char *line);
 void	free_map_lines(char **map_lines, int height);
 void	free_visited_array(char **visited, int height);
 void	free_rgb_array(char **rgb, int count);
+void	free_grid(t_map *map);
 
 char	*get_next_line(int fd);
 char	*ft_strjoin1(char *s1, char *s2, int *end_loc);

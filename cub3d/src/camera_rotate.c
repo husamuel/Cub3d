@@ -80,6 +80,6 @@ void	rotate_camera(t_game *game, int direction)
 {
 	double	rot_speed;
 
-	rot_speed = ROTATION_SPEED * direction;
+	rot_speed = -ROTATION_SPEED * direction;
 	apply_rotation_matrix(game, rot_speed);
 }

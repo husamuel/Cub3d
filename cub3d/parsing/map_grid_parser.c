@@ -73,11 +73,13 @@ void	process_map(char **map_lines, int *height, char *line, int *max_width)
 	(*height)++;
 }
 
-static int	process_first_line(t_map *map, char **map_lines, char *first_line)
+static int	process_first_line(t_game *game, t_map *map, char **map_lines, int *height, char *first_line)
 {
 	int		width;
 	char	*newline;
 
+	if (!first_line)
+		return (0);
 	newline = ft_strchr(first_line, '\n');
 	if (newline)
 		*newline = '\0';
@@ -88,21 +90,28 @@ static int	process_first_line(t_map *map, char **map_lines, char *first_line)
 		exit(1);
 	}
 	width = ft_strlen(map_lines[0]);
-	check_player_in_line(map, map_lines[0], 0);
+	check_player_in_line(game, map, map_lines[0], 0, map_lines, height, first_line);
 	return (width);
 }
 
-void	parse_map_grid(int fd, t_map *map, char *first_line)
+void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 {
 	char			*map_lines[MAX_MAP_HEIGHT];
 	int				height;
 	int				max_width;
 	t_parse_state	state;
 
-	max_width = process_first_line(map, map_lines, first_line);
-	height = 1;
+	height = 0;
+	max_width = process_first_line(game, map, map_lines, &height, first_line);
+	if (max_width == 0)
+	{
+		height = 0;
+		max_width = 0;
+	}
+	else
+		height = 1;
 	state = (t_parse_state){map, map_lines, &height, &max_width};
-	process_map_line(fd, &state);
+	process_map_line(game, fd, &state, first_line);
 	map->height = height;
 	map->width = max_width;
 	allocate_grid_line(map, map_lines, height, NULL);

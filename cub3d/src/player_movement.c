@@ -31,8 +31,8 @@ static void	move_strafe(t_game *game, double *new_x, double *new_y)
 	double	strafe_x;
 	double	strafe_y;
 
-	strafe_x = game->player.dir_y;
-	strafe_y = -game->player.dir_x;
+	strafe_x = -game->player.dir_y;
+	strafe_y = game->player.dir_x;
 	if (game->keys.strafe_right)
 	{
 		*new_x += strafe_x * MOVE_SPEED;

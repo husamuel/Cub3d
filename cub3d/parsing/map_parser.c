@@ -44,7 +44,7 @@ void	skip_empty_lines(int fd, char **line)
 	}
 }
 
-int	parse_config_section(t_map *map, int fd, char **line)
+int	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 {
 	int		config_count;
 
@@ -59,7 +59,7 @@ int	parse_config_section(t_map *map, int fd, char **line)
 			free(*line);
 			continue ;
 		}
-		parse_config_line(map, *line);
+		parse_config_line(map, *line, game);
 		config_count++;
 		free(*line);
 	}
@@ -76,11 +76,11 @@ void	map_parser(t_game *game, char *filename)
 	line = NULL;
 	fd = open(filename, O_RDONLY);
 	check_file_open(fd, filename);
-	config_count = parse_config_section(game->map, fd, &line);
+	config_count = parse_config_section(game->map, fd, &line, game);
 	check_config_complete(config_count, line, fd);
-	parse_map_grid(fd, game->map, line);
-	validate_texture_paths(game->map);
-	verify_map(game->map);
+	parse_map_grid(game, fd, game->map, line);
+	validate_texture_paths(game->map, game);
+	verify_map(game, game->map, line);
 	free(line);
 	close(fd);
 }

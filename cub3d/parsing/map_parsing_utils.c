@@ -53,23 +53,17 @@ void	check_rgb_value(int value, char **rgb, int i)
 	}
 }
 
-void	process_map_line(int fd, t_parse_state *state)
+void	process_map_line(t_game *game, int fd, t_parse_state *state, char *first_line)
 {
 	char	*line;
 
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (line[0] == '\n' || line[0] == '\0')
-		{
-			free(line);
-			line = get_next_line(fd);
-			continue ;
-		}
-		validate_map_line(line);
+		validate_map_line(line, game, state->map_lines, state->height, first_line);
 		process_map(state->map_lines, state->height, line, state->max_width);
-		check_player_in_line(state->map, state->map_lines[*state->height - 1],
-			*state->height - 1);
+		check_player_in_line(game, state->map, state->map_lines[*state->height - 1],
+			*state->height - 1, state->map_lines, state->height, first_line);
 		free(line);
 		line = get_next_line(fd);
 	}

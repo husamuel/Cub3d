@@ -24,7 +24,7 @@ static void	free_texture_paths(t_map *map)
 		free(map->ea_path);
 }
 
-static void	free_grid(t_map *map)
+void	free_grid(t_map *map)
 {
 	int	i;
 
@@ -65,9 +65,31 @@ static void	free_mlx_resources(t_game *game)
 void	free_all(t_game *game)
 {
 	if (!game)
-		return ;
+		return;
 	if (game->map)
+	{
 		free_map(game->map);
+		game->map = NULL;
+	}
+	if (game->north.img)
+	{
+		mlx_destroy_image(game->mlx, game->north.img);
+		game->north.img = NULL;
+	}
+	if (game->south.img)
+	{
+		mlx_destroy_image(game->mlx, game->south.img);
+		game->south.img = NULL;
+	}
+	if (game->west.img)
+	{
+		mlx_destroy_image(game->mlx, game->west.img);
+		game->west.img = NULL;
+	}
+	if (game->east.img)
+	{
+		mlx_destroy_image(game->mlx, game->east.img);
+		game->east.img = NULL;
+	}
 	free_mlx_resources(game);
-	free(game);
 }
