@@ -43,6 +43,7 @@ void	update_player(t_game *game)
 		}
 		y++;
 	}
+	free_all(game);
 	printf("Error: No player found in map\n");
 	exit(1);
 }

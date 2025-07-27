@@ -12,22 +12,23 @@
 
 #include "./../cub3d.h"
 
-static void	validate_texture_path(const char *path, const char *label, t_game *game)
+static void	validate_texture_path(const char *path, const char *label, t_game *game, char *line)
 {
 	if (!path)
 	{
+		free(line);
 		free_all(game);
 		printf("Error: missing texture path for %s\n", label);
 		exit(1);
 	}
 }
 
-void	validate_texture_paths(t_map *map, t_game *game)
+void	validate_texture_paths(t_map *map, t_game *game, char *line)
 {
-	validate_texture_path(map->no_path, "NO", game);
-	validate_texture_path(map->so_path, "SO", game);
-	validate_texture_path(map->we_path, "WE", game);
-	validate_texture_path(map->ea_path, "EA", game);
+	validate_texture_path(map->no_path, "NO", game, line);
+	validate_texture_path(map->so_path, "SO", game, line);
+	validate_texture_path(map->we_path, "WE", game, line);
+	validate_texture_path(map->ea_path, "EA", game, line);
 }
 
 void	free_visited_array(char **visited, int height)

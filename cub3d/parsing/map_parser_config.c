@@ -25,7 +25,7 @@ static char	**split_color(char *line)
 	return (result);
 }
 
-static void	parse_color(int *dest, char *line2, t_game *game, char *line)
+static void	parse_color(int *dest, char *line2, t_game *game, char *line, int fd)
 {
 	char	**rgb;
 	int		i;
@@ -37,13 +37,14 @@ static void	parse_color(int *dest, char *line2, t_game *game, char *line)
 		if (!rgb[i])
 		{
 			printf("Error: missing RGB component\n");
-			free_rgb_array(rgb, i);
+			free_rgb_array(rgb, 3);
 			free(line);
+			gnl_clear_stash(fd);
 			free_all(game);
 			exit(1);
 		}
 		dest[i] = ft_atoi(rgb[i]);
-		check_rgb_value(dest[i], rgb, i);
+		check_rgb_value(dest[i], rgb, game, line, fd);
 		i++;
 	}
 	free_rgb_array(rgb, 3);
@@ -79,7 +80,7 @@ static void	parse_texture(t_map *map, char *line, int type)
 		store_texture_path(&map->ea_path, line + 3);
 }
 
-void	parse_config_line(t_map *map, char *line, t_game *game)
+void	parse_config_line(t_map *map, char *line, t_game *game, int fd)
 {
 	while (*line == ' ')
 		line++;
@@ -92,7 +93,7 @@ void	parse_config_line(t_map *map, char *line, t_game *game)
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		parse_texture(map, line, 3);
 	else if (ft_strncmp(line, "F ", 2) == 0)
-		parse_color(map->floor_color, line + 2, game, line);
+		parse_color(map->floor_color, line + 2, game, line, fd);
 	else if (ft_strncmp(line, "C ", 2) == 0)
-		parse_color(map->ceiling_color, line + 2, game, line);
+		parse_color(map->ceiling_color, line + 2, game, line, fd);
 }

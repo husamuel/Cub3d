@@ -73,7 +73,7 @@ void	process_map(char **map_lines, int *height, char *line, int *max_width)
 	(*height)++;
 }
 
-static int	process_first_line(t_game *game, t_map *map, char **map_lines, int *height, char *first_line)
+static int	process_first_line(t_game *game, t_map *map, char **map_lines, int *height, char *first_line, int fd)
 {
 	int		width;
 	char	*newline;
@@ -90,7 +90,7 @@ static int	process_first_line(t_game *game, t_map *map, char **map_lines, int *h
 		exit(1);
 	}
 	width = ft_strlen(map_lines[0]);
-	check_player_in_line(game, map, map_lines[0], 0, map_lines, height, first_line);
+	check_player_in_line(game, map, map_lines[0], 0, map_lines, height, first_line, NULL, fd);
 	return (width);
 }
 
@@ -102,7 +102,7 @@ void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 	t_parse_state	state;
 
 	height = 0;
-	max_width = process_first_line(game, map, map_lines, &height, first_line);
+	max_width = process_first_line(game, map, map_lines, &height, first_line, fd);
 	if (max_width == 0)
 	{
 		height = 0;

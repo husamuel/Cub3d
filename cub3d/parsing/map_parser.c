@@ -21,13 +21,14 @@ void	check_file_open(int fd, char *filename)
 	}
 }
 
-void	check_config_complete(int config_count, char *line, int fd)
+void	check_config_complete(int config_count, char *line, int fd, t_game *game)
 {
 	if (config_count < 6)
 	{
 		printf("Error: incomplete configuration\n");
 		free(line);
 		close(fd);
+		free_all(game);
 		exit(1);
 	}
 }
@@ -59,12 +60,20 @@ int	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 			free(*line);
 			continue ;
 		}
-		parse_config_line(map, *line, game);
+		parse_config_line(map, *line, game, fd);
 		config_count++;
 		free(*line);
 	}
 	skip_empty_lines(fd, line);
 	return (config_count);
+}
+
+void    gnl_clear_stash(int fd)
+{
+	char    *tmp;
+
+	while ((tmp = get_next_line(fd)))
+		free(tmp);
 }
 
 void	map_parser(t_game *game, char *filename)
@@ -77,9 +86,9 @@ void	map_parser(t_game *game, char *filename)
 	fd = open(filename, O_RDONLY);
 	check_file_open(fd, filename);
 	config_count = parse_config_section(game->map, fd, &line, game);
-	check_config_complete(config_count, line, fd);
+	check_config_complete(config_count, line, fd, game);
 	parse_map_grid(game, fd, game->map, line);
-	validate_texture_paths(game->map, game);
+	validate_texture_paths(game->map, game, line);
 	verify_map(game, game->map, line);
 	free(line);
 	close(fd);

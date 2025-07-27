@@ -19,6 +19,7 @@ void	load_texture(t_game *game, t_tex *tex, char *path)
 	if (!tex->img)
 	{
 		printf("Erro: falha ao carregar textura '%s'\n", path);
+		free_all(game);
 		exit(1);
 	}
 	tex->data = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len,
@@ -26,12 +27,14 @@ void	load_texture(t_game *game, t_tex *tex, char *path)
 	if (!tex->data)
 	{
 		printf("Erro: falha ao obter data da textura '%s'\n", path);
+		free_all(game);
 		exit(1);
 	}
 	if (tex->height <= 0 || tex->width <= 0)
 	{
 		printf("Erro: textura com dimensões inválidas (%d x %d): %s\n",
 			tex->width, tex->height, path);
+		free_all(game);
 		exit(1);
 	}
 }
