@@ -73,24 +73,24 @@ void	process_map(char **map_lines, int *height, char *line, int *max_width)
 	(*height)++;
 }
 
-static int	process_first_line(t_game *game, t_map *map, char **map_lines, int *height, char *first_line, int fd)
+static int	process_first_line(t_game *game, t_parse_state *state)
 {
 	int		width;
 	char	*newline;
 
-	if (!first_line)
+	if (!state->first_line)
 		return (0);
-	newline = ft_strchr(first_line, '\n');
+	newline = ft_strchr(state->first_line, '\n');
 	if (newline)
 		*newline = '\0';
-	map_lines[0] = ft_strdup(first_line);
-	if (!map_lines[0])
+	state->map_lines[0] = ft_strdup(state->first_line);
+	if (!state->map_lines[0])
 	{
 		printf("Error: memory allocation failed for map line\n");
 		exit(1);
 	}
-	width = ft_strlen(map_lines[0]);
-	check_player_in_line(game, map, map_lines[0], 0, map_lines, height, first_line, NULL, fd);
+	width = ft_strlen(state->map_lines[0]);
+	check_player_in_line(game, state, 0);
 	return (width);
 }
 
@@ -102,7 +102,8 @@ void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 	t_parse_state	state;
 
 	height = 0;
-	max_width = process_first_line(game, map, map_lines, &height, first_line, fd);
+	state = (t_parse_state){map, map_lines, &height, &max_width, first_line, fd};
+	max_width = process_first_line(game, &state);
 	if (max_width == 0)
 	{
 		height = 0;
@@ -110,8 +111,7 @@ void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 	}
 	else
 		height = 1;
-	state = (t_parse_state){map, map_lines, &height, &max_width};
-	process_map_line(game, fd, &state, first_line);
+	process_map_line(game, fd, &state);
 	map->height = height;
 	map->width = max_width;
 	allocate_grid_line(map, map_lines, height, NULL);

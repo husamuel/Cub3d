@@ -17,31 +17,31 @@ int	is_player_char(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-void	set_player_position(t_game *game, t_map *map, int x, int y, char dir, char **map_lines, int *height, char *first_line, char *line, int fd)
+void	set_player_position(t_game *game, t_parse_state *state, int x, int y)
 {
-	if (map->player_dir)
+	if (state->map->player_dir)
 	{
-		free_resources(map_lines, *height, first_line);
-		free(line);
-		gnl_clear_stash(fd);
+		free_resources(state->map_lines, *state->height, state->first_line);
+		free(game->current_line);
+		gnl_clear_stash(state->fd);
 		free_all(game);
 		printf("Error: multiple player start positions\n");
 		exit(1);
 	}
-	map->player_x = x;
-	map->player_y = y;
-	map->player_dir = dir;
+	state->map->player_x = x;
+	state->map->player_y = y;
+	state->map->player_dir = state->map_lines[y][x];
 }
 
-void	check_player_in_line(t_game *game, t_map *map, char *line, int y, char **map_lines, int *height, char *first_line, char *linee, int fd)
+void	check_player_in_line(t_game *game, t_parse_state *state, int y)
 {
 	int	i;
 
 	i = 0;
-	while (line[i])
+	while (state->map_lines[y][i])
 	{
-		if (is_player_char(line[i]))
-			set_player_position(game, map, i, y, line[i], map_lines, height, first_line, linee, fd);
+		if (is_player_char(state->map_lines[y][i]))
+			set_player_position(game, state, i, y);
 		i++;
 	}
 }
@@ -51,26 +51,26 @@ int	is_valid_map_char(char c)
 	return (c == '0' || c == '1' || is_player_char(c));
 }
 
-void	validate_map_line(char *line, t_game *game, char **map_lines, int *height, char *first_line, int fd)
+void	validate_map_line(t_game *game, t_parse_state *state)
 {
 	int		i;
 	size_t	len;
 
 	i = 0;
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
+	len = ft_strlen(game->current_line);
+	if (len > 0 && game->current_line[len - 1] == '\n')
 	{
-		line[len - 1] = '\0';
+		game->current_line[len - 1] = '\0';
 	}
-	while (line[i])
+	while (game->current_line[i])
 	{
-		if (!is_valid_map_char(line[i]) && line[i] != ' ')
+		if (!is_valid_map_char(game->current_line[i]) && game->current_line[i] != ' ')
 		{
-			free_resources(map_lines, *height, first_line);
+			free_resources(state->map_lines, *state->height, state->first_line);
 			free_all(game);
-			printf("Error: invalid character '%c' in map\n", line[i]);
-			free(line);
-			gnl_clear_stash(fd);
+			printf("Error: invalid character '%c' in map\n", game->current_line[i]);
+			free(game->current_line);
+			gnl_clear_stash(state->fd);
 			exit(1);
 		}
 		i++;

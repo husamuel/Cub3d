@@ -68,14 +68,6 @@ int	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 	return (config_count);
 }
 
-void    gnl_clear_stash(int fd)
-{
-	char    *tmp;
-
-	while ((tmp = get_next_line(fd)))
-		free(tmp);
-}
-
 void	map_parser(t_game *game, char *filename)
 {
 	int		fd;
@@ -89,7 +81,8 @@ void	map_parser(t_game *game, char *filename)
 	check_config_complete(config_count, line, fd, game);
 	parse_map_grid(game, fd, game->map, line);
 	validate_texture_paths(game->map, game, line);
-	verify_map(game, game->map, line);
+	game->current_line = line;
+	verify_map(game);
 	free(line);
 	close(fd);
 }

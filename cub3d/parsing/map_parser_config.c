@@ -25,12 +25,12 @@ static char	**split_color(char *line)
 	return (result);
 }
 
-static void	parse_color(int *dest, char *line2, t_game *game, char *line, int fd)
+static void	parse_color(int *dest, char *line, t_game *game, int fd)
 {
 	char	**rgb;
 	int		i;
 
-	rgb = split_color(line2);
+	rgb = split_color(line + 2);
 	i = 0;
 	while (i < 3)
 	{
@@ -44,7 +44,8 @@ static void	parse_color(int *dest, char *line2, t_game *game, char *line, int fd
 			exit(1);
 		}
 		dest[i] = ft_atoi(rgb[i]);
-		check_rgb_value(dest[i], rgb, game, line, fd);
+		game->current_line = line;
+		check_rgb_value(dest[i], rgb, game, fd);
 		i++;
 	}
 	free_rgb_array(rgb, 3);
@@ -93,7 +94,7 @@ void	parse_config_line(t_map *map, char *line, t_game *game, int fd)
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		parse_texture(map, line, 3);
 	else if (ft_strncmp(line, "F ", 2) == 0)
-		parse_color(map->floor_color, line + 2, game, line, fd);
+		parse_color(map->floor_color, line, game, fd);
 	else if (ft_strncmp(line, "C ", 2) == 0)
-		parse_color(map->ceiling_color, line + 2, game, line, fd);
+		parse_color(map->ceiling_color, line, game, fd);
 }

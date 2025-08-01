@@ -82,6 +82,7 @@ typedef struct s_keys
 
 typedef struct s_game
 {
+	char		*current_line; // só para casos de erro
 	void		*mlx;
 	void		*win;
 	void		*img;
@@ -121,13 +122,6 @@ typedef struct s_wall
 }	t_wall;
 
 // =============== Just for norminette ====================
-typedef struct s_grid_info
-{
-	char	**map_lines;
-	int		*height;
-	int		*max_width;
-}	t_grid_info;
-
 typedef struct s_draw_data
 {
 	char	*data;
@@ -153,6 +147,8 @@ typedef struct s_parse_state
 	char	**map_lines;
 	int		*height;
 	int		*max_width;
+	char	*first_line;
+	int		fd;
 }	t_parse_state;
 // ========================================================
 
@@ -160,16 +156,16 @@ typedef struct s_parse_state
 void	map_parser(t_game *game, char *filename);
 void	parse_config_line(t_map *map, char *line, t_game *game, int fd);
 void	validate_texture_paths(t_map *map, t_game *game, char *line);
-void	verify_map(t_game *game, t_map *map, char *line);
-void	check_player_in_line(t_game *game, t_map *map, char *line, int y, char **map_lines, int *height, char *first_line, char *linee, int fd);
+void	verify_map(t_game *game);
+void	check_player_in_line(t_game *game, t_parse_state *state, int y);
 int		parse_config_section(t_map *map, int fd, char **line, t_game *game);
 void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line);
-void	check_rgb_value(int value, char **rgb, t_game *game, char *line, int fd);
+void	check_rgb_value(int value, char **rgb, t_game *game, int fd);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
 int		is_player_char(char c);
 int		is_valid_map_char(char c);
-void	validate_map_line(char *line, t_game *game, char **map_lines, int *height, char *first_line, int fd);
-void	process_map_line(t_game *game, int fd, t_parse_state *state, char *first_line);
+void	validate_map_line(t_game *game, t_parse_state *state);
+void	process_map_line(t_game *game, int fd, t_parse_state *state);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);
@@ -218,6 +214,7 @@ void	free_map_lines(char **map_lines, int height);
 void	free_visited_array(char **visited, int height);
 void	free_rgb_array(char **rgb, int count);
 void	free_grid(t_map *map);
+void	destroy_texture(void *mlx, t_tex *tex);
 void    gnl_clear_stash(int fd);
 
 char	*get_next_line(int fd);

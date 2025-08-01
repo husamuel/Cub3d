@@ -12,12 +12,14 @@
 
 #include "./../cub3d.h"
 
-static void	flood_fill(t_game *game, t_map *map, char **visited, int x, int y, char *line)
+static void	flood_fill(t_game *game, char **visited, int x, int y)
 {
+	t_map	*map = game->map;
+
 	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
 	{
 		free_visited_array(visited, map->height);
-		free(line);
+		free(game->current_line);
 		free_all(game);
 		printf("Error: map is not closed\n");
 		exit(1);
@@ -27,16 +29,16 @@ static void	flood_fill(t_game *game, t_map *map, char **visited, int x, int y, c
 	if (map->grid[y][x] == ' ')
 	{
 		free_visited_array(visited, map->height);
-		free(line);
+		free(game->current_line);
 		free_all(game);
 		printf("Error: empty space found on map\n");
 		exit(1);
 	}
 	visited[y][x] = 1;
-	flood_fill(game, map, visited, x + 1, y, line);
-	flood_fill(game, map, visited, x - 1, y, line);
-	flood_fill(game, map, visited, x, y + 1, line);
-	flood_fill(game, map, visited, x, y - 1, line);
+	flood_fill(game, visited, x + 1, y);
+	flood_fill(game, visited, x - 1, y);
+	flood_fill(game, visited, x, y + 1);
+	flood_fill(game, visited, x, y - 1);
 }
 
 static void	check_empty_lines(t_map *map, t_game *game, char *line)
@@ -104,13 +106,13 @@ static char	**allocate_visited_array(t_map *map)
 	return (visited);
 }
 
-void	verify_map(t_game *game, t_map *map, char *line)
+void	verify_map(t_game *game)
 {
 	char	**visited;
 
-	check_map_dimensions(map, game, line);
-	check_empty_lines(map, game, line);
-	visited = allocate_visited_array(map);
-	flood_fill(game, map, visited, map->player_x, map->player_y, line);
-	free_visited_array(visited, map->height);
+	check_map_dimensions(game->map, game, game->current_line);
+	check_empty_lines(game->map, game, game->current_line);
+	visited = allocate_visited_array(game->map);
+	flood_fill(game, visited, game->map->player_x, game->map->player_y);
+	free_visited_array(visited, game->map->height);
 }

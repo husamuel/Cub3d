@@ -43,12 +43,12 @@ void	free_rgb_array(char **rgb, int count)
 	free(rgb);
 }
 
-void	check_rgb_value(int value, char **rgb, t_game *game, char *line, int fd)
+void	check_rgb_value(int value, char **rgb, t_game *game, int fd)
 {
 	if (value < 0 || value > 255)
 	{
 		printf("Error: invalid RGB value\n");
-		free(line);
+		free(game->current_line);
 		gnl_clear_stash(fd);
 		free_all(game);
 		free_rgb_array(rgb, 3);
@@ -56,17 +56,17 @@ void	check_rgb_value(int value, char **rgb, t_game *game, char *line, int fd)
 	}
 }
 
-void	process_map_line(t_game *game, int fd, t_parse_state *state, char *first_line)
+void	process_map_line(t_game *game, int fd, t_parse_state *state)
 {
 	char	*line;
 
 	line = get_next_line(fd);
 	while (line)
 	{
-		validate_map_line(line, game, state->map_lines, state->height, first_line, fd);
+		game->current_line = line;
+		validate_map_line(game, state);
 		process_map(state->map_lines, state->height, line, state->max_width);
-		check_player_in_line(game, state->map, state->map_lines[*state->height - 1],
-			*state->height - 1, state->map_lines, state->height, first_line, line, fd);
+		check_player_in_line(game, state, *state->height - 1);
 		free(line);
 		line = get_next_line(fd);
 	}

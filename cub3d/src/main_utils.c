@@ -46,3 +46,20 @@ void	load_textures(t_game *game)
 	load_texture(game, &game->west, game->map->we_path);
 	load_texture(game, &game->east, game->map->ea_path);
 }
+
+void	destroy_texture(void *mlx, t_tex *tex)
+{
+	if (tex->img)
+	{
+		mlx_destroy_image(mlx, tex->img);
+		tex->img = NULL;
+	}
+}
+
+void    gnl_clear_stash(int fd)
+{
+	char    *tmp;
+
+	while ((tmp = get_next_line(fd)))
+		free(tmp);
+}

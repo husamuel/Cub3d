@@ -71,25 +71,9 @@ void	free_all(t_game *game)
 		free_map(game->map);
 		game->map = NULL;
 	}
-	if (game->north.img)
-	{
-		mlx_destroy_image(game->mlx, game->north.img);
-		game->north.img = NULL;
-	}
-	if (game->south.img)
-	{
-		mlx_destroy_image(game->mlx, game->south.img);
-		game->south.img = NULL;
-	}
-	if (game->west.img)
-	{
-		mlx_destroy_image(game->mlx, game->west.img);
-		game->west.img = NULL;
-	}
-	if (game->east.img)
-	{
-		mlx_destroy_image(game->mlx, game->east.img);
-		game->east.img = NULL;
-	}
+	destroy_texture(game->mlx, &game->north);
+	destroy_texture(game->mlx, &game->south);
+	destroy_texture(game->mlx, &game->west);
+	destroy_texture(game->mlx, &game->east);
 	free_mlx_resources(game);
 }
