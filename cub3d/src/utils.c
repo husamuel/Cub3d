@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:34:27 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 17:38:51 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:11:11 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,32 @@ void	function(void)
 {
 	printf("Error: empty space found on map\n");
 	exit(1);
+}
+
+int	is_line_empty(const char *line)
+{
+	while (*line)
+	{
+		if (*line != ' ' && *line != '\t')
+			return (0);
+		line++;
+	}
+	return (1);
+}
+
+int	handle_empty_line(char *line, int *map_started)
+{
+	size_t	len;
+
+	len = ft_strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
+	if (is_line_empty(line))
+	{
+		free(line);
+		if (*map_started)
+			return (1);
+		return (2);
+	}
+	return (0);
 }

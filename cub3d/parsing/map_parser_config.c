@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:46 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 18:32:45 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:04:20 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,13 @@ void	parse_config_line(t_map *map, char *line, t_game *game, int fd)
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		parse_texture(map, line, 3);
 	else if (ft_strncmp(line, "F ", 2) == 0)
+	{
 		parse_color(map->floor_color, line, game, fd);
+		map->has_floor = 1;
+	}
 	else if (ft_strncmp(line, "C ", 2) == 0)
+	{
 		parse_color(map->ceiling_color, line, game, fd);
+		map->has_ceiling = 1;
+	}
 }

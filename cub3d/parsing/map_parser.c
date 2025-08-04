@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:51 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/03 18:11:57 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:48:19 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	check_file_open(int fd, char *filename)
 	}
 }
 
-void	check_config_complete(int config_count,
-	char *line, int fd, t_game *game)
+void	check_config_complete(t_map *map, char *line, int fd, t_game *game)
 {
-	if (config_count < 6)
+	if (!map->has_floor || !map->has_ceiling)
 	{
 		printf("Error: incomplete configuration\n");
 		free(line);
+		gnl_clear_stash(fd);
 		close(fd);
 		free_all(game);
 		exit(1);
@@ -46,7 +46,7 @@ void	skip_empty_lines(int fd, char **line)
 	}
 }
 
-int	parse_config_section(t_map *map, int fd, char **line, t_game *game)
+void	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 {
 	int		config_count;
 
@@ -66,24 +66,23 @@ int	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 		free(*line);
 	}
 	skip_empty_lines(fd, line);
-	return (config_count);
 }
 
 void	map_parser(t_game *game, char *filename)
 {
 	int		fd;
 	char	*line;
-	int		config_count;
 
 	line = NULL;
 	fd = open(filename, O_RDONLY);
 	check_file_open(fd, filename);
-	config_count = parse_config_section(game->map, fd, &line, game);
-	check_config_complete(config_count, line, fd, game);
+	parse_config_section(game->map, fd, &line, game);
+	check_config_complete(game->map, line, fd, game);
 	parse_map_grid(game, fd, game->map, line);
 	validate_texture_paths(game->map, game, line);
 	game->current_line = line;
 	verify_map(game);
 	free(line);
+	gnl_clear_stash(fd);
 	close(fd);
 }

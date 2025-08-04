@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: husamuel <husamuel@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:33:59 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/08 16:32:22 by husamuel         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:04:36 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	init_map(t_map *map)
 	map->ceiling_color[0] = -1;
 	map->ceiling_color[1] = -1;
 	map->ceiling_color[2] = -1;
+	map->has_floor = 0;
+	map->has_ceiling = 0;
 }
 
 static void	init_game(t_game *game)

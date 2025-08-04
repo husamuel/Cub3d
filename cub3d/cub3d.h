@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:22:16 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/11 16:51:58 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:47:13 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_map
 	char	*ea_path;
 	int		floor_color[3];
 	int		ceiling_color[3];
+	int		has_floor;
+	int		has_ceiling;
 }	t_map;
 
 typedef struct s_player
@@ -158,7 +160,7 @@ void	parse_config_line(t_map *map, char *line, t_game *game, int fd);
 void	validate_texture_paths(t_map *map, t_game *game, char *line);
 void	verify_map(t_game *game);
 void	check_player_in_line(t_game *game, t_parse_state *state, int y);
-int		parse_config_section(t_map *map, int fd, char **line, t_game *game);
+void	parse_config_section(t_map *map, int fd, char **line, t_game *game);
 void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line);
 void	check_rgb_value(int value, char **rgb, t_game *game, int fd);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
@@ -166,6 +168,8 @@ int		is_player_char(char c);
 int		is_valid_map_char(char c);
 void	validate_map_line(t_game *game, t_parse_state *state);
 void	process_map_line(t_game *game, int fd, t_parse_state *state);
+int		is_line_empty(const char *line);
+int		handle_empty_line(char *line, int *map_started);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);

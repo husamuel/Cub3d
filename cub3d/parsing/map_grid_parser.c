@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:17:38 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/03 18:06:36 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:54:16 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,5 @@ void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 	map->width = max_width;
 	allocate_grid_line(map, map_lines, height, NULL);
 	free_resources(map_lines, height, NULL);
+	gnl_clear_stash(fd);
 }
