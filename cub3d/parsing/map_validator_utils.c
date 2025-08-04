@@ -12,7 +12,8 @@
 
 #include "./../cub3d.h"
 
-static void	validate_texture_path(const char *path, const char *label, t_game *game, char *line)
+static void	validate_texture_path(const char *path,
+	const char *label, t_game *game, char *line)
 {
 	if (!path)
 	{

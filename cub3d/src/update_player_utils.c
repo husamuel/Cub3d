@@ -14,9 +14,9 @@
 
 static void	set_north_dir(t_game *game)
 {
-	game->player.dir_x = 0.0;    // no horizontal movement
-	game->player.dir_y = -1.0;   // move up (row - 1)
-	game->player.plane_x = 0.66; // camera plane perpendicular to dir vector
+	game->player.dir_x = 0.0;
+	game->player.dir_y = -1.0;
+	game->player.plane_x = 0.66;
 	game->player.plane_y = 0.0;
 }
 

@@ -65,7 +65,7 @@ static void	free_mlx_resources(t_game *game)
 void	free_all(t_game *game)
 {
 	if (!game)
-		return;
+		return ;
 	if (game->map)
 	{
 		free_map(game->map);

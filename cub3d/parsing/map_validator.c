@@ -14,8 +14,9 @@
 
 static void	flood_fill(t_game *game, char **visited, int x, int y)
 {
-	t_map	*map = game->map;
+	t_map	*map;
 
+	map = game->map;
 	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
 	{
 		free_visited_array(visited, map->height);
@@ -31,8 +32,7 @@ static void	flood_fill(t_game *game, char **visited, int x, int y)
 		free_visited_array(visited, map->height);
 		free(game->current_line);
 		free_all(game);
-		printf("Error: empty space found on map\n");
-		exit(1);
+		function();
 	}
 	visited[y][x] = 1;
 	flood_fill(game, visited, x + 1, y);

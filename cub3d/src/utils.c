@@ -35,3 +35,9 @@ char	*ft_strjoin1(char *s1, char *s2, int *end_loc)
 		*end_loc = 0;
 	return (result);
 }
+
+void	function(void)
+{
+	printf("Error: empty space found on map\n");
+	exit(1);
+}

@@ -42,8 +42,9 @@ int	get_tex_x(t_game *game, t_ray *ray, t_wall *wall, t_tex *tex)
 		wall_x = game->player.x + wall->perp_dist * ray->dir_x;
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * (double)(tex->width));
-	if ((ray->side == 0 && ray->dir_x < 0) || (ray->side == 1 && ray->dir_y > 0))
-    	tex_x = tex->width - tex_x - 1;
+	if ((ray->side == 0 && ray->dir_x < 0)
+		|| (ray->side == 1 && ray->dir_y > 0))
+		tex_x = tex->width - tex_x - 1;
 	return (tex_x);
 }
 

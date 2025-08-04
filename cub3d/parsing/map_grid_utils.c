@@ -64,11 +64,14 @@ void	validate_map_line(t_game *game, t_parse_state *state)
 	}
 	while (game->current_line[i])
 	{
-		if (!is_valid_map_char(game->current_line[i]) && game->current_line[i] != ' ')
+		if (!is_valid_map_char(game->current_line[i])
+			&& game->current_line[i] != ' ')
 		{
-			free_resources(state->map_lines, *state->height, state->first_line);
+			free_resources(state->map_lines,
+				*state->height, state->first_line);
 			free_all(game);
-			printf("Error: invalid character '%c' in map\n", game->current_line[i]);
+			printf("Error: invalid character '%c' in map\n",
+				game->current_line[i]);
 			free(game->current_line);
 			gnl_clear_stash(state->fd);
 			exit(1);

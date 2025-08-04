@@ -102,7 +102,8 @@ void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line)
 	t_parse_state	state;
 
 	height = 0;
-	state = (t_parse_state){map, map_lines, &height, &max_width, first_line, fd};
+	state = (t_parse_state){map, map_lines, &height,
+		&max_width, first_line, fd};
 	max_width = process_first_line(game, &state);
 	if (max_width == 0)
 	{

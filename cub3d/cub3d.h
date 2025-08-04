@@ -215,9 +215,10 @@ void	free_visited_array(char **visited, int height);
 void	free_rgb_array(char **rgb, int count);
 void	free_grid(t_map *map);
 void	destroy_texture(void *mlx, t_tex *tex);
-void    gnl_clear_stash(int fd);
-
+void	gnl_clear_stash(int fd);
 char	*get_next_line(int fd);
 char	*ft_strjoin1(char *s1, char *s2, int *end_loc);
+
+void	function(void);
 
 #endif

@@ -56,10 +56,14 @@ void	destroy_texture(void *mlx, t_tex *tex)
 	}
 }
 
-void    gnl_clear_stash(int fd)
+void	gnl_clear_stash(int fd)
 {
-	char    *tmp;
+	char	*tmp;
 
-	while ((tmp = get_next_line(fd)))
+	tmp = get_next_line(fd);
+	while (tmp)
+	{
 		free(tmp);
+		tmp = get_next_line(fd);
+	}
 }

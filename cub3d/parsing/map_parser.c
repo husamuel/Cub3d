@@ -21,7 +21,8 @@ void	check_file_open(int fd, char *filename)
 	}
 }
 
-void	check_config_complete(int config_count, char *line, int fd, t_game *game)
+void	check_config_complete(int config_count,
+	char *line, int fd, t_game *game)
 {
 	if (config_count < 6)
 	{
