@@ -6,9 +6,14 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:22:16 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/04 17:47:13 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:35:51 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/* BUGS:
+ * Aceita tudo o que vier depois das 6 config lines
+ * Aceita texto a frente das cores
+*/
 
 #ifndef CUB3D_H
 # define CUB3D_H

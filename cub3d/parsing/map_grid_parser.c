@@ -6,30 +6,39 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:17:38 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/04 16:54:16 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:44:06 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../cub3d.h"
 
-static void	allocate_grid(t_map *map, char **map_lines, int height, char *line)
+static void	allocate_grid(t_map *map, char **map_lines, int row, char *line)
 {
 	int	i;
+	int	len;
 
-	map->grid[height] = ft_strdup(map_lines[height]);
-	if (!map->grid[height])
+	len = ft_strlen(map_lines[row]);
+	map->grid[row] = malloc(map->width + 1);
+	if (!map->grid[row])
 	{
 		printf("Error: memory allocation failed for map grid line\n");
 		i = 0;
-		while (i < height)
-		{
-			free(map->grid[i]);
-			i++;
-		}
+		while (i < row)
+			free(map->grid[i++]);
 		free(map->grid);
-		free_resources(map_lines, height, line);
+		free_resources(map_lines, map->height, line);
 		exit(1);
 	}
+	i = 0;
+	while (i < map->width)
+	{
+		if (i < len)
+			map->grid[row][i] = map_lines[row][i];
+		else
+			map->grid[row][i] = ' ';
+		i++;
+	}
+	map->grid[row][map->width] = '\0';
 }
 
 void	allocate_grid_line(t_map *map, char **map_lines, int height, char *line)
