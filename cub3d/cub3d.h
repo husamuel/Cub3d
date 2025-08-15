@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 /* BUGS:
- * Aceita tudo o que vier depois das 6 config lines
  * Aceita texto a frente das cores
 */
 
@@ -174,7 +173,9 @@ int		is_valid_map_char(char c);
 void	validate_map_line(t_game *game, t_parse_state *state);
 void	process_map_line(t_game *game, int fd, t_parse_state *state);
 int		is_line_empty(const char *line);
-int		handle_empty_line(char *line, int *map_started);
+int		has_space_inside_content(char *line, int width);
+void	check_map_surrounded_by_walls(t_game *game);
+void	peek_ahead(t_game *game, int fd, t_parse_state *state);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);
@@ -227,7 +228,5 @@ void	destroy_texture(void *mlx, t_tex *tex);
 void	gnl_clear_stash(int fd);
 char	*get_next_line(int fd);
 char	*ft_strjoin1(char *s1, char *s2, int *end_loc);
-
-void	function(void);
 
 #endif

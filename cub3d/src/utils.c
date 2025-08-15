@@ -36,36 +36,83 @@ char	*ft_strjoin1(char *s1, char *s2, int *end_loc)
 	return (result);
 }
 
-void	function(void)
-{
-	printf("Error: empty space found on map\n");
-	exit(1);
-}
-
 int	is_line_empty(const char *line)
 {
 	while (*line)
 	{
-		if (*line != ' ' && *line != '\t')
+		if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r')
 			return (0);
 		line++;
 	}
 	return (1);
 }
 
-int	handle_empty_line(char *line, int *map_started)
+int	has_space_inside_content(char *line, int width)
 {
-	size_t	len;
+    int start = 0;
+    int end = width - 1;
+    int x;
 
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		line[len - 1] = '\0';
-	if (is_line_empty(line))
+    while (start < width && line[start] == ' ')
+        start++;
+    while (end >= 0 && line[end] == ' ')
+        end--;
+    x = start;
+    while (x <= end)
+    {
+        if (line[x] == ' ')
+            return (1);
+        x++;
+    }
+    return (0);
+}
+
+void	check_map_surrounded_by_walls(t_game *game)
+{
+    int x;
+	int y;
+
+    y = -1;
+    while (++y < game->map->width)
+    {
+        if (game->map->grid[0][y] != '1' || game->map->grid[game->map->height - 1][y] != '1')
+        {
+            printf("Error: map is not surrounded by walls\n");
+			free(game->current_line);
+			free_all(game);
+            exit(1);
+        }
+    }
+    x = -1;
+    while (++x < game->map->height)
+    {
+        if (game->map->grid[x][0] != '1' || game->map->grid[x][game->map->width - 1] != '1')
+        {
+            printf("Error: map is not surrounded by walls\n");
+			free(game->current_line);
+			free_all(game);
+            exit(1);
+        }
+    }
+}
+
+void	peek_ahead(t_game *game, int fd, t_parse_state *state)
+{
+	char	*next;
+
+	next = get_next_line(fd);
+	while (next)
 	{
-		free(line);
-		if (*map_started)
-			return (1);
-		return (2);
+		if (!is_line_empty(next))
+		{
+			free(next);
+			printf("Error: empty line found on map\n");
+			free_resources(state->map_lines, *state->height, state->first_line);
+			free_all(game);
+			gnl_clear_stash(fd);
+			exit(1);
+		}
+		free(next);
+		next = get_next_line(fd);
 	}
-	return (0);
 }

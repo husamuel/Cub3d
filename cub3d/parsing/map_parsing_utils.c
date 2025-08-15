@@ -59,23 +59,18 @@ void	check_rgb_value(int value, char **rgb, t_game *game, int fd)
 void	process_map_line(t_game *game, int fd, t_parse_state *state)
 {
 	char	*line;
-	int		map_started;
-	int		ret;
 
-	map_started = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		game->current_line = line;
-		ret = handle_empty_line(line, &map_started);
-		if (ret == 1)
-			break ;
-		if (ret == 2)
+		if (is_line_empty(line))
 		{
-			line = get_next_line(fd);
-			continue ;
+			free(line);
+			peek_ahead(game, fd, state);
+			game->current_line = NULL;
+			return ;
 		}
-		map_started = 1;
 		validate_map_line(game, state);
 		process_map(state->map_lines, state->height, line, state->max_width);
 		check_player_in_line(game, state, *state->height - 1);

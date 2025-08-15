@@ -56,26 +56,26 @@ void	validate_map_line(t_game *game, t_parse_state *state)
 	int		i;
 	size_t	len;
 
-	i = 0;
+	i = -1;
 	len = ft_strlen(game->current_line);
 	if (len > 0 && game->current_line[len - 1] == '\n')
 	{
 		game->current_line[len - 1] = '\0';
 	}
-	while (game->current_line[i])
+	while (game->current_line[++i])
 	{
 		if (!is_valid_map_char(game->current_line[i])
 			&& game->current_line[i] != ' ')
 		{
+			printf("Error: invalid character '%c' in map\n",
+				game->current_line[i]);
 			free_resources(state->map_lines,
 				*state->height, state->first_line);
 			free_all(game);
-			printf("Error: invalid character '%c' in map\n",
-				game->current_line[i]);
-			free(game->current_line);
+			if (game->current_line != state->first_line)
+				free(game->current_line);
 			gnl_clear_stash(state->fd);
 			exit(1);
 		}
-		i++;
 	}
 }

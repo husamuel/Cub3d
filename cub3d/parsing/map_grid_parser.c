@@ -92,6 +92,8 @@ static int	process_first_line(t_game *game, t_parse_state *state)
 	newline = ft_strchr(state->first_line, '\n');
 	if (newline)
 		*newline = '\0';
+	game->current_line = state->first_line;
+	validate_map_line(game, state);
 	state->map_lines[0] = ft_strdup(state->first_line);
 	if (!state->map_lines[0])
 	{

@@ -32,31 +32,13 @@ static void	flood_fill(t_game *game, char **visited, int x, int y)
 		free_visited_array(visited, map->height);
 		free(game->current_line);
 		free_all(game);
-		function();
+		exit(1);
 	}
 	visited[y][x] = 1;
 	flood_fill(game, visited, x + 1, y);
 	flood_fill(game, visited, x - 1, y);
 	flood_fill(game, visited, x, y + 1);
 	flood_fill(game, visited, x, y - 1);
-}
-
-static void	check_empty_lines(t_map *map, t_game *game, char *line)
-{
-	int	i;
-
-	i = 0;
-	while (i < map->height)
-	{
-		if (map->grid[i][0] == '\0')
-		{
-			free(line);
-			free_all(game);
-			printf("Error: empty line found on map\n");
-			exit(1);
-		}
-		i++;
-	}
 }
 
 static void	check_map_dimensions(t_map *map, t_game *game, char *line)
@@ -106,12 +88,31 @@ static char	**allocate_visited_array(t_map *map)
 	return (visited);
 }
 
+static void	check_spaces_in_map(t_game *game)
+{
+    int y;
+
+	y = 0;
+    while (y < game->map->height)
+    {
+        if (has_space_inside_content(game->map->grid[y], game->map->width))
+        {
+            printf("Error: space inside map content\n");
+            free(game->current_line);
+            free_all(game);
+            exit(1);
+        }
+        y++;
+    }
+}
+
 void	verify_map(t_game *game)
 {
 	char	**visited;
 
 	check_map_dimensions(game->map, game, game->current_line);
-	check_empty_lines(game->map, game, game->current_line);
+	check_spaces_in_map(game);
+	check_map_surrounded_by_walls(game);
 	visited = allocate_visited_array(game->map);
 	flood_fill(game, visited, game->map->player_x, game->map->player_y);
 	free_visited_array(visited, game->map->height);
