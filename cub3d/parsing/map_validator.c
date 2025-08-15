@@ -17,14 +17,6 @@ static void	flood_fill(t_game *game, char **visited, int x, int y)
 	t_map	*map;
 
 	map = game->map;
-	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
-	{
-		free_visited_array(visited, map->height);
-		free(game->current_line);
-		free_all(game);
-		printf("Error: map is not closed\n");
-		exit(1);
-	}
 	if (visited[y][x] || map->grid[y][x] == '1')
 		return ;
 	if (map->grid[y][x] == ' ')
