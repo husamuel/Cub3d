@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:34:27 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/04 17:11:11 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:48:40 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,53 +47,38 @@ int	is_line_empty(const char *line)
 	return (1);
 }
 
-int	has_space_inside_content(char *line, int width)
+static void	check_row_closed(char *row, int width, t_game *game)
 {
-    int start = 0;
-    int end = width - 1;
-    int x;
+	int	start;
+	int	end;
 
-    while (start < width && line[start] == ' ')
-        start++;
-    while (end >= 0 && line[end] == ' ')
-        end--;
-    x = start;
-    while (x <= end)
-    {
-        if (line[x] == ' ')
-            return (1);
-        x++;
-    }
-    return (0);
+	start = 0;
+	end = width - 1;
+	while (start < width && (row[start] == ' ' || row[start] == '\t'))
+		start++;
+	while (end >= 0 && (row[end] == ' ' || row[end] == '\t'))
+		end--;
+	if (start > end || row[start] != '1' || row[end] != '1')
+		free_and_exit(game);
 }
 
-void	check_map_surrounded_by_walls(t_game *game)
+static void	check_column_closed(t_game *game, int col)
 {
-    int x;
-	int y;
+	int	start;
+	int	end;
 
-    y = -1;
-    while (++y < game->map->width)
-    {
-        if (game->map->grid[0][y] != '1' || game->map->grid[game->map->height - 1][y] != '1')
-        {
-            printf("Error: map is not surrounded by walls\n");
-			free(game->current_line);
-			free_all(game);
-            exit(1);
-        }
-    }
-    x = -1;
-    while (++x < game->map->height)
-    {
-        if (game->map->grid[x][0] != '1' || game->map->grid[x][game->map->width - 1] != '1')
-        {
-            printf("Error: map is not surrounded by walls\n");
-			free(game->current_line);
-			free_all(game);
-            exit(1);
-        }
-    }
+	start = 0;
+	end = game->map->height - 1;
+	while (start < game->map->height
+		&& (game->map->grid[start][col] == ' '
+		|| game->map->grid[start][col] == '\t'))
+		start++;
+	while (end >= 0 && (game->map->grid[end][col] == ' '
+		|| game->map->grid[end][col] == '\t'))
+		end--;
+	if (start > end || game->map->grid[start][col] != '1'
+		|| game->map->grid[end][col] != '1')
+		free_and_exit(game);
 }
 
 void	peek_ahead(t_game *game, int fd, t_parse_state *state)

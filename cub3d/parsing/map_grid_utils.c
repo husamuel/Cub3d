@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 18:22:54 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/03 18:08:32 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/15 18:54:40 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	validate_map_line(t_game *game, t_parse_state *state)
 	while (game->current_line[++i])
 	{
 		if (!is_valid_map_char(game->current_line[i])
-			&& game->current_line[i] != ' ')
+			&& game->current_line[i] != ' ' && game->current_line[i] != '\t')
 		{
 			printf("Error: invalid character '%c' in map\n",
 				game->current_line[i]);

@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:59 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/04 16:44:06 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:48:58 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ static void	flood_fill(t_game *game, char **visited, int x, int y)
 	map = game->map;
 	if (visited[y][x] || map->grid[y][x] == '1')
 		return ;
-	if (map->grid[y][x] == ' ')
+	if (map->grid[y][x] == ' ' || map->grid[y][x] == '\t')
 	{
+		printf("Error: Empty space found inside map\n");
 		free_visited_array(visited, map->height);
 		free(game->current_line);
 		free_all(game);
@@ -80,22 +81,23 @@ static char	**allocate_visited_array(t_map *map)
 	return (visited);
 }
 
-static void	check_spaces_in_map(t_game *game)
+static void	check_map_surrounded_by_walls(t_game *game)
 {
-    int y;
+	int	x;
+	int	y;
 
+	x = 0;
+	while (x < game->map->height)
+	{
+		check_row_closed(game->map->grid[x], game->map->width, game);
+		x++;
+	}
 	y = 0;
-    while (y < game->map->height)
-    {
-        if (has_space_inside_content(game->map->grid[y], game->map->width))
-        {
-            printf("Error: space inside map content\n");
-            free(game->current_line);
-            free_all(game);
-            exit(1);
-        }
-        y++;
-    }
+	while (y < game->map->width)
+	{
+		check_column_closed(game, y);
+		y++;
+	}
 }
 
 void	verify_map(t_game *game)
@@ -103,7 +105,6 @@ void	verify_map(t_game *game)
 	char	**visited;
 
 	check_map_dimensions(game->map, game, game->current_line);
-	check_spaces_in_map(game);
 	check_map_surrounded_by_walls(game);
 	visited = allocate_visited_array(game->map);
 	flood_fill(game, visited, game->map->player_x, game->map->player_y);

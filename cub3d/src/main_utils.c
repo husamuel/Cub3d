@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:33:35 by diolivei          #+#    #+#             */
-/*   Updated: 2025/07/03 18:33:45 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/15 15:31:11 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,12 @@ void	gnl_clear_stash(int fd)
 		free(tmp);
 		tmp = get_next_line(fd);
 	}
+}
+
+void	free_and_exit(t_game *game)
+{
+	printf("Error: map is not surrounded by walls\n");
+	free(game->current_line);
+	free_all(game);
+	exit(1);
 }

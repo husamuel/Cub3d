@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:22:16 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/12 18:35:51 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:49:09 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,6 @@ int		is_valid_map_char(char c);
 void	validate_map_line(t_game *game, t_parse_state *state);
 void	process_map_line(t_game *game, int fd, t_parse_state *state);
 int		is_line_empty(const char *line);
-int		has_space_inside_content(char *line, int width);
-void	check_map_surrounded_by_walls(t_game *game);
 void	peek_ahead(t_game *game, int fd, t_parse_state *state);
 
 // Window and rendering functions (init_window.c)
@@ -228,5 +226,6 @@ void	destroy_texture(void *mlx, t_tex *tex);
 void	gnl_clear_stash(int fd);
 char	*get_next_line(int fd);
 char	*ft_strjoin1(char *s1, char *s2, int *end_loc);
+void	free_and_exit(t_game *game);
 
 #endif
