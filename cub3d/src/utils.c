@@ -47,7 +47,7 @@ int	is_line_empty(const char *line)
 	return (1);
 }
 
-static void	check_row_closed(char *row, int width, t_game *game)
+void	check_row_closed(char *row, int width, t_game *game)
 {
 	int	start;
 	int	end;
@@ -62,7 +62,7 @@ static void	check_row_closed(char *row, int width, t_game *game)
 		free_and_exit(game);
 }
 
-static void	check_column_closed(t_game *game, int col)
+void	check_column_closed(t_game *game, int col)
 {
 	int	start;
 	int	end;

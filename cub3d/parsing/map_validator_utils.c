@@ -44,3 +44,32 @@ void	free_visited_array(char **visited, int height)
 	}
 	free(visited);
 }
+
+int	count_rgb_components(char **rgb)
+{
+	int count;
+
+	count = 0;
+	while (rgb[count])
+		count++;
+	return (count);
+}
+
+int	store_rgb_value(char *src, int *dest)
+{
+	int i;
+
+	while (*src == ' ')
+		src++;
+	i = ft_atoi(src);
+	*dest = i;
+	while (*src >= '0' && *src <= '9')
+		src++;
+	while (*src == ' ')
+		src++;
+	if (*src && *src != ',' && *src != '\n')
+		return (1);
+	if (check_rgb_value(i))
+		return (1);
+	return (0);
+}

@@ -43,17 +43,11 @@ void	free_rgb_array(char **rgb, int count)
 	free(rgb);
 }
 
-void	check_rgb_value(int value, char **rgb, t_game *game, int fd)
+int	check_rgb_value(int value)
 {
 	if (value < 0 || value > 255 || value == '\0')
-	{
-		printf("Error: invalid RGB value\n");
-		free(game->current_line);
-		gnl_clear_stash(fd);
-		free_all(game);
-		free_rgb_array(rgb, 3);
-		exit(1);
-	}
+		return (1);
+	return (0);
 }
 
 void	process_map_line(t_game *game, int fd, t_parse_state *state)

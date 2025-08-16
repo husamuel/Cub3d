@@ -25,7 +25,7 @@ void	check_config_complete(t_map *map, char *line, int fd, t_game *game)
 {
 	if (!map->has_floor || !map->has_ceiling)
 	{
-		printf("Error: incomplete configuration\n");
+		printf("Error: wrong configuration\n");
 		free(line);
 		gnl_clear_stash(fd);
 		close(fd);
@@ -56,6 +56,7 @@ void	parse_config_section(t_map *map, int fd, char **line, t_game *game)
 		*line = get_next_line(fd);
 		if (!*line)
 			break ;
+		game->current_line = *line;
 		if ((*line)[0] == '\n' || (*line)[0] == '\0')
 		{
 			free(*line);

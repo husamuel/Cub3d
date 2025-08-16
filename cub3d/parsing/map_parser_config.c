@@ -12,68 +12,75 @@
 
 #include "./../cub3d.h"
 
-static char	**split_color(char *line)
+static int	parse_color_values(char *src, int *dest)
 {
-	char	**result;
+	char	**rgb;
+	int		i;
 
-	result = ft_split(line, ',');
-	if (!result)
+	rgb = ft_split(src, ',');
+	if (!rgb)
 	{
 		printf("Error: memory allocation failed for RGB split\n");
 		exit(1);
 	}
-	return (result);
+	if (count_rgb_components(rgb) != 3)
+	{
+		free_rgb_array(rgb, count_rgb_components(rgb));
+		return (1);
+	}
+	i = -1;
+	while (++i < 3)
+		if (store_rgb_value(rgb[i], &dest[i]))
+		{
+			free_rgb_array(rgb, 3);
+			return (1);
+		}
+	free_rgb_array(rgb, 3);
+	return (0);
 }
 
-static void	parse_color(int *dest, char *line, t_game *game, int fd)
+static void parse_color(int *dest, char *line, t_game *game, int fd)
 {
-	char	**rgb;
-	int		i;
-	int		comp_count;
+	int	flag;
 
-	rgb = split_color(line + 2);
-	comp_count = 0;
-	i = -1;
-	while (rgb[comp_count])
-		comp_count++;
-	if (comp_count != 3)
+	line += 2;
+	while (*line == ' ')
+		line++;
+	flag = parse_color_values(line, dest);
+	while (*line && *line != '\n')
+		line++;
+	while (*line == ' ' || *line == '\n')
+		line++;
+	if (flag || *line != '\0')
 	{
-		printf("Error: invalid number of RGB components\n");
-		free_rgb_array(rgb, comp_count);
-		free(line);
+		printf("Error: extra characters in RGB config\n");
+		free(game->current_line);
 		gnl_clear_stash(fd);
 		free_all(game);
 		exit(1);
 	}
-	while (++i < 3)
-	{
-		dest[i] = ft_atoi(rgb[i]);
-		game->current_line = line;
-		check_rgb_value(dest[i], rgb, game, fd);
-	}
-	free_rgb_array(rgb, 3);
 }
 
 int	store_texture_path(char **dest, char *src)
 {
-	int		i;
+	int	i;
 
+	while (*src == ' ')
+		src++;
 	if (*dest)
-	{
 		free(*dest);
-		*dest = NULL;
-	}
 	*dest = ft_strdup(src);
 	if (!*dest)
 	{
 		printf("Error: memory allocation failed for path\n");
 		exit(1);
 	}
-	i = 0;
-	while ((*dest)[i] && (*dest)[i] != '\n' && (*dest)[i] != ' ')
-		i++;
-	(*dest)[i] = '\0';
-	src += i;
+	i = ft_strlen(*dest) - 1;
+	while (i >= 0 && ((*dest)[i] == ' ' || (*dest)[i] == '\n'))
+		i--;
+	(*dest)[i + 1] = '\0';
+	while (*src && *src != '\n' && *src != ' ')
+		src++;
 	while (*src == ' ' || *src == '\n')
 		src++;
 	if (*src != '\0')

@@ -10,10 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* BUGS:
- * Aceita texto a frente das cores
-*/
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -166,7 +162,7 @@ void	verify_map(t_game *game);
 void	check_player_in_line(t_game *game, t_parse_state *state, int y);
 void	parse_config_section(t_map *map, int fd, char **line, t_game *game);
 void	parse_map_grid(t_game *game, int fd, t_map *map, char *first_line);
-void	check_rgb_value(int value, char **rgb, t_game *game, int fd);
+int		check_rgb_value(int value);
 void	process_map(char **map_lines, int *height, char *line, int *max_width);
 int		is_player_char(char c);
 int		is_valid_map_char(char c);
@@ -174,6 +170,10 @@ void	validate_map_line(t_game *game, t_parse_state *state);
 void	process_map_line(t_game *game, int fd, t_parse_state *state);
 int		is_line_empty(const char *line);
 void	peek_ahead(t_game *game, int fd, t_parse_state *state);
+void	check_row_closed(char *row, int width, t_game *game);
+void	check_column_closed(t_game *game, int col);
+int		count_rgb_components(char **rgb);
+int		store_rgb_value(char *src, int *dest);
 
 // Window and rendering functions (init_window.c)
 int		init_window(t_game *game);
