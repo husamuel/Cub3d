@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 18:06:42 by diolivei          #+#    #+#             */
-/*   Updated: 2025/06/04 18:09:36 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/18 14:13:06 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	free_visited_array(char **visited, int height)
 
 int	count_rgb_components(char **rgb)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (rgb[count])
@@ -57,7 +57,7 @@ int	count_rgb_components(char **rgb)
 
 int	store_rgb_value(char *src, int *dest)
 {
-	int i;
+	int	i;
 
 	while (*src == ' ')
 		src++;

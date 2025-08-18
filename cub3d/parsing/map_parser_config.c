@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:46 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/12 18:44:00 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/18 14:12:38 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,18 @@ static int	parse_color_values(char *src, int *dest)
 	}
 	i = -1;
 	while (++i < 3)
+	{
 		if (store_rgb_value(rgb[i], &dest[i]))
 		{
 			free_rgb_array(rgb, 3);
 			return (1);
 		}
+	}
 	free_rgb_array(rgb, 3);
 	return (0);
 }
 
-static void parse_color(int *dest, char *line, t_game *game, int fd)
+static void	parse_color(int *dest, char *line, t_game *game, int fd)
 {
 	int	flag;
 
