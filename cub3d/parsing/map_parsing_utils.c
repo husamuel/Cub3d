@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:28:55 by diolivei          #+#    #+#             */
-/*   Updated: 2025/08/15 15:52:27 by diolivei         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:50:11 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_rgb_array(char **rgb, int count)
 
 int	check_rgb_value(int value)
 {
-	if (value < 0 || value > 255 || value == '\0')
+	if (value < 0 || value > 255)
 		return (1);
 	return (0);
 }
