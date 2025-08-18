@@ -1,6 +1,6 @@
-# cub3d
+# Cub3D
 
-**cub3d** is a dynamic first-person maze exploration game inspired by *Wolfenstein 3D*. Built from the ground up using raycasting techniques, it renders a 3D environment from a 2D map defined in a `.cub` configuration file. This project showcases smooth navigation, textured walls, and customizable aesthetics, delivering an engaging retro gaming experience.
+**Cub3D** is a dynamic first-person maze exploration game inspired by *Wolfenstein 3D*. Built from the ground up using raycasting techniques, it renders a 3D environment from a 2D map defined in a `.cub` configuration file. This project showcases smooth navigation, textured walls, and customizable aesthetics, delivering an engaging retro gaming experience.
 
 ##### Table of Contents  
 - [Overview](#overview)  
