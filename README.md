@@ -14,9 +14,7 @@
 
 The goal of **cub3d** is to create a visually immersive 3D maze using raycasting, where players can explore custom-designed maps. The project leverages the MiniLibX library to handle graphics and user input, providing a lightweight yet powerful rendering engine.
 
-<p align="center">
-  
-</p>
+  ![Cub3D GIF](cub(1).gif)
 
 ## Features
 
